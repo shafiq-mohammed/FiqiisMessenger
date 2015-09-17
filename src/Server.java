@@ -66,7 +66,27 @@ public class Server extends JFrame {
     //Now we need to set up our application: Set up and run the server
     public void startRunning(){
         try { //set up the server and give it a port number
-            server = new ServerSocket(6789, 100); //6789 for dummie purposes atm
+            //6789 for dummie purposes atm, 100 for how many ppl
+            // can wait to access the instant messenger. Called backlog/queue length
+            server = new ServerSocket(6789, 100);
+            //you want to run this loop forever:
+            while(true){
+                //Try to connect and have the conversation with someone else.
+                try{
+                //We have to run these 3 methods which will be the crux of the application.
+                    waitForConnection(){}
+                    //Once someone is connected with me, we have to set up the input & output streams
+                    setupStreams(){}
+                    //Method that allows us to send messages back and fourth
+                    whileChatting(){}
+
+                }catch (EOFException eofException){ //EOFException Signals end of stream/connection
+                    showMessage("\n Server ended the connection!");
+                }finally {
+                    closeStuff(); //Housekeeping stuff to close connection
+                }
+
+            }
         }catch(IOException ioException){
             ioException.printStackTrace();
         }
